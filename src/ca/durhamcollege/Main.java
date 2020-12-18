@@ -1,3 +1,8 @@
+//Nick Sturch-Flint & Kaifkhan Vakil
+//December 18, 2020
+//Program: Java Lab 5
+//
+
 package ca.durhamcollege;
 
 import javafx.application.Application;
@@ -12,8 +17,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Main extends Application
 {
+
+    public static double round(double value, int places)
+    {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -40,8 +57,25 @@ public class Main extends Application
                 double weight = Double.parseDouble(inputWeight.getText());
                 double height = Double.parseDouble(inputHeight.getText());
                 final double answer = weight / (height * height);
-                String s = answer+"";
+                String s = round(answer, 2)+"";
                 output.setText(s);
+
+                if (answer < 18.5)
+                {
+                    result.setText("Underweight");
+                }
+                else if (answer >= 18.5 && answer < 25)
+                {
+                    result.setText("Normal");
+                }
+                else if (answer >= 25 && answer < 30)
+                {
+                    result.setText("Overweight");
+                }
+                else
+                {
+                    result.setText("Obese");
+                }
             }
         });
 /*
@@ -62,7 +96,7 @@ public class Main extends Application
 
 
         // Step 3 - add layout container to scene
-        Scene scene = new Scene(gridPane, 320, 480);
+        Scene scene = new Scene(gridPane, 800, 300);
         gridPane.setMinSize(6, 8);
         gridPane.setVgap(10);
         gridPane.setHgap(10);
@@ -80,7 +114,6 @@ public class Main extends Application
         // Step 4 - add scene to stage
         primaryStage.setScene(scene);
         primaryStage.show();
-
 
 
 
